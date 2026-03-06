@@ -6,6 +6,7 @@ import requests
 # --- Config ---
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 GEMINI_MODEL = "gemini-2.0-flash"  # free-tier-friendly
+RETRIES = 10
 
 st.set_page_config(page_title="CheerUp Bot", page_icon="😊")
 st.title("CheerUp — a supportive space to vent 💛")
@@ -37,7 +38,9 @@ def gemini_reply(prompt):
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.7},
     }
-    r = requests.post(url, headers=headers, params=params, json=body, timeout=20)
+    for i in range(0, RETRIES):
+        r = requests.post(url, headers=headers, params=params, json=body, timeout=30)
+        if r.status_code==200: break;
     r.raise_for_status()
     data = r.json()
     return data["candidates"][0]["content"]["parts"][0]["text"]
