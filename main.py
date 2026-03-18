@@ -1,12 +1,14 @@
-
 # streamlit_app.py
 import streamlit as st
 import requests
+import time
+import certifi
 
 # --- Config ---
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
-GEMINI_MODEL = "gemini-2.0-flash"  # free-tier-friendly
-RETRIES = 10
+GEMINI_MODEL = "gemini-2.5-flash"  # free-tier-friendly
+RETRIES = 3
+DELAY = 5
 
 st.set_page_config(page_title="CheerUp Bot", page_icon="😊")
 st.title("CheerUp — a supportive space to vent 💛")
@@ -39,8 +41,9 @@ def gemini_reply(prompt):
         "generationConfig": {"temperature": 0.7},
     }
     for i in range(0, RETRIES):
-        r = requests.post(url, headers=headers, params=params, json=body, timeout=30)
-        if r.status_code==200: break;
+        r = requests.post(url, headers=headers, params=params, json=body, timeout=30, verify = False)
+        time.sleep(DELAY)
+        if r.status_code==200: break
     r.raise_for_status()
     data = r.json()
     return data["candidates"][0]["content"]["parts"][0]["text"]
