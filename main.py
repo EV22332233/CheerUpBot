@@ -21,10 +21,41 @@ from gemini_requests import gemini_generate
 # ---------------------------
 # Page & global UI settings
 # ---------------------------
+
+import streamlit as st
+import os
+
+# ---- Big centered title ----
+SITE_TITLE = os.environ.get("SITE_TITLE", "CheerUp bot 😊")
+
+# ---- Page config with old smiley restored everywhere ----
 st.set_page_config(
-    page_title="CheerUpBot",
-    page_icon="🌤️",
+    page_title=SITE_TITLE,
+    page_icon="😊",      # ← TAB ICON NOW SET TO 😊
     layout="centered",
+)
+
+st.markdown(
+    f"""
+    <style>
+    .cheerup-header {{
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin-top: 1rem;
+    }}
+    .cheerup-title {{
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        font-weight: 800;
+        line-height: 1.2;
+    }}
+    </style>
+
+    <div class="cheerup-header">
+      <h1 class="cheerup-title">{SITE_TITLE}</h1>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
 # Light, visible disclaimer (non-clinical)
