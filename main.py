@@ -42,7 +42,7 @@ st.markdown(
         display: flex;
         justify-content: center;
         text-align: center;
-        margin-top: 1rem;
+        margin-top: 0.5rem;
     }}
     .cheerup-title {{
         font-size: clamp(2.2rem, 5vw, 3.4rem);
